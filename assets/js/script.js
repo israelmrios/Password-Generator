@@ -1,98 +1,118 @@
- 
-// // Write password to the #password input
-// function writePassword() {
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
-
-//   passwordText.value = password;
-// }
-
 var numArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 var lowerAlphaArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 var upperAlphaArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 var specialCharArray = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '-', '_', '+', '=', ','];
-var mainArray = [];
 
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
+//  WindowPrompts was created to collect the imput from the user 
+function windowPrompts() {
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+  var passwordLegnth = prompt("Please choose a password with a length of at least 8 characters and no more than 128 characters.");
 
-// Generator functions
-function writePassword () {
-  var passwordLegnth = prompt(
-    "Please choose a password with a length of at least 8 characters and no more than 128 characters.");
+  //  parseInt was added to convert the number string imput into an integer
   var length = parseInt(passwordLegnth);
-  if (passwordLegnth === 0) {
-    alert("Please enter a number for password length test 1.");
+
+  if (isNaN(length)) {
+    alert("Please enter a number between 8 and 128 for the password length.");
     return;
-  } if (isNaN(passwordLegnth)) {
-    alert("Please enter a number for password length test 2.");
-    return;
-  } if (passwordLegnth < 8) {
+  } 
+
+  if (length < 8) {
     alert("Please choose a password with at least 8 characters.");
     return;
-  } if (passwordLegnth > 128) {
+  } 
+
+  if (length > 128) {
     alert("Please choose a password with no more than 128 characters.");
     return;
   }
+
   var wantNumbers = confirm("Would you like to include numbers in your password?");
+
   var wantLowerAlpha = confirm("Would you like to include lower case letters in your password?");
+
   var wantUpperAlpha = confirm("Would you like to include upper case letters in your password?");
+
   var wantSepecialChar = confirm("Would you like to include special characters in your password?");
+  
+  if (!wantNumbers && !wantLowerAlpha && !wantUpperAlpha && !wantSepecialChar) {
+    alert("Please choose at leaset one type of character.");
+    return;
+  }
 
-if (!wantNumbers && !wantLowerAlpha && !wantUpperAlpha && !wantSepecialChar) {
-  alert("Please choose at leaset one type of character.");
-  return;
-}
+  var wantObject = {
+    length: length,
+    wantNumbers: wantNumbers,
+    wantLowerAlpha: wantLowerAlpha,
+    wantUpperAlpha: wantUpperAlpha,
+    wantSepecialChar: wantSepecialChar,
+  }
 
-var selectPassword = {
-  length: length,
-  numArray: wantNumbers,
-  lowerAlphaArray: wantLowerAlpha,
-  upperAlphaArray: wantUpperAlpha,
-  specialCharArray: wantSepecialChar,
+  return wantObject;
 };
-passwordGenerator(length, numArray, lowerAlphaArray, upperAlphaArray, specialCharArray);
-// console.log(selectPassword.numArray);
-}
-// // this is where i left off, add something to collect all the data from this option
 
-// }
+//  This function was created to get a random character for any given array
 function getRandom(array) {
   return array[Math.floor(Math.random() * array.length)];
-}
+};
 
-function passwordGenerator(length, numArray, lowerAlphaArray, upperAlphaArray, specialCharArray) {
-  var generatedPassword = "";
+//  This function will take the answers from the windowPrompts Object and generate the random password
+function passwordGenerator() {
 
-  var typesCount = numArray + lowerAlphaArray + upperAlphaArray + specialCharArray;
+  //  Declared this variable to use the values of the object in the windowPrompts fuction
+  var wantObject = windowPrompts();
 
-  console.log('typesCount: ', typesCount);
+  //  Created these empty arrays to concat and push the new arrays and chosen characters
+  var mainArray = [];
+  var chosenCharacters = [];
+  var password = [];
+  var finalPassword = [];
 
-  // var typesArr = [{wantNumbers}, {wantLowerAlpha}, {wantUpperAlpha}, {wantSepecialChar}].filter(
-  //   item => Object.values(item)[0]
-  // );
+  if (wantObject.wantNumbers) {
+    mainArray = mainArray.concat(numArray);
+    chosenCharacters.push(getRandom(numArray));
+  }
 
-  // console.log('typesArr: ', typesArr);
+  if (wantObject.wantLowerAlpha) {
+    mainArray = mainArray.concat(lowerAlphaArray);
+    chosenCharacters.push(getRandom(lowerAlphaArray));
+  }
 
-  // this is where i stopped 08/26 im trying to figure out what the cost portion is look at vid min. 28
-  // for(let i = 0; i < length; i += typesCount) {
-  //   typesArr.forEach(type => {
-  //     var funcName = Object.keys(type)[0];
+  if (wantObject.wantUpperAlpha) {
+    mainArray = mainArray.concat(upperAlphaArray);
+    chosenCharacters.push(getRandom(upperAlphaArray));
+  }
 
-  //     console.log('funcName: ', funcName);
+  if (wantObject.wantSepecialChar) {
+    mainArray = mainArray.concat(specialCharArray);
+    chosenCharacters.push(getRandom(specialCharArray));
+  }
 
-      // mainArray = funcName.split(" ");
+  //  Adding at least one of each character chosen in the windowsPrompts
+  password = password.concat(chosenCharacters);
 
-      // console.log(typeof mainArray);
-      // console.log(mainArray);
+  //  Created this loop to randomly fill the remaining part of the chosen password length
+  for (var i = 0; i < (wantObject.length - chosenCharacters.length); i++) {
+    var randomizePassword = getRandom(mainArray);
+    password.push(randomizePassword);
+  }
+  
+  //  Created this loop to shuffle the finalPassword
+  //  for (var j = 0; j < wantObject.length; j++) {
+  //  var randomizePassword = getRandom(password);
+  //  finalPassword.push(randomizePassword);
+  //  }
 
-      // generatedPassword += getRandom[mainArray]();
-      // getRandom(funcName) = generatedPassword
-  //   });
-  // }
-  // console.log(generatedPassword);
-// }
-}
+  //  Added the .join method to remove the spaces and quotations from the password variable
+  var finalPassword = password.join('');
+
+  passwordText.value = finalPassword;
+
+  return passwordText.value;
+};
+
+//  querySelectors to input and output the required data
+var generateBtn = document.querySelector("#generate");
+var passwordText = document.querySelector("#password");
+
+// Event listener to generate button
+generateBtn.addEventListener("click", passwordGenerator);
