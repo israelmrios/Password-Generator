@@ -14,7 +14,8 @@ body,
 
 body {
   font-family: sans-serif;
-  background-color: #f9fbfd;
+/* Updated the background-color to make it a two-tone */
+  background-color:#85929E;
 }
 
 .wrapper {
@@ -27,13 +28,17 @@ header {
   text-align: center;
   padding: 20px;
   padding-top: 0px;
-  color: hsl(206, 17%, 28%);
+/* Changed font color and added shadow to make font stand out */
+  color: whitesmoke;
+  font-size: 30px;
+  text-shadow: 5px 5px black;
 }
 
 .card {
   background-color: hsl(0, 0%, 100%);
+/* Added border to make card stand-out */
+  border: 2px solid black;
   border-radius: 5px;
-  border-width: 1px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
   color: hsl(206, 17%, 28%);
   font-size: 18px;
@@ -48,6 +53,11 @@ header {
   width: 100%;
   background: #e7e9eb;
   height: 2px;
+}
+
+/* Added h3 selector to center the text */
+h3 {
+  text-align: center;
 }
 
 .card-body {
@@ -88,9 +98,9 @@ header {
   cursor: pointer;
 }
 
-button[disabled] {
-  cursor: default;
-  background: #c0c7cf;
+/* Added a hover shadow over the button to make it noticable */
+.btn:hover {
+  box-shadow: 4px 4px 10px #85929E;
 }
 
 .float-right {
